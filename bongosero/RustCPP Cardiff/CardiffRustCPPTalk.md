@@ -5,9 +5,11 @@
 I'm Alex, Software Engineer at Esri with a background in Engineering and Game development domains. 
 
 Can find me on 
+- Twitter: @Payne325
 - LinkedIn: Alexander Payne
 - Github: Payne325
 - Discord : PaynoInsano
+
 
 Today I'm going to be talking about a little side project I've been working on which I programmed in Rust and which utilises face detection from live webcam feed. 
 
