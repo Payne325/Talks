@@ -18,7 +18,7 @@ Today I'm going to be talking about a little side project I've been working on w
 I've dipped my toe into rust a few times, I've started the rust book, used it in a couple of game jams and used my personal programming kata (text based game) to understand basic I/O. I wanted to make a proof of concept for a computer game that was a bit silly, something I could work on slowly on the side and hopefully a somewhat novel idea.
 
 I thought I'd use Rust to see how feasible it would be to run with such a project. I wasn't sure what I'd end up learning, but was excited to find out. The key really was to pick a project where the keys aim wasn't necessarily to learn Rust, but to see what I picked up along the way
-
+ 
 What I ended up learning was a little bit about rust language features, and a fair bit about the maturity of computer vision support in the rust crate realm. 
 
 My aim was to make a "Space Invaders" style game that used head tracking to move the player character left and right. I've done a little bit of work with computer vision with Python in the past so I had a rough idea of how such a game would work in mind before starting.
