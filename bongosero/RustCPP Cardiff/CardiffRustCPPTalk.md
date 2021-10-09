@@ -7,7 +7,7 @@ I'm Alex, Software Engineer at Esri with a background in Engineering and Game de
 Can find me on 
 - Twitter: @Payne325
 - LinkedIn: Alexander Payne
-- Github: Payne325
+- GitHub: Payne325
 - Discord : PaynoInsano
 
 
@@ -25,7 +25,7 @@ My aim was to make a "Space Invaders" style game that used head tracking to move
 
 ## Why I decided to use OpenCV
 
-I already had prior experience with OpenCV with python, and I knew the underlying library with performant and had mutliple ways of doing what I wanted. I was interested in whether there was a rust crate for opencv available, but I also wanted to get an idea of any other applications that I might be able to use. After a bit of digging I arrived at three real options.
+I already had prior experience with OpenCV with python, and I knew the underlying library with performant and had multiple ways of doing what I wanted. I was interested in whether there was a rust crate for opencv available, but I also wanted to get an idea of any other applications that I might be able to use. After a bit of digging I arrived at three real options.
 
 - Piston (a modular game engine written in rust) had some imageproc functions, but at the time it was still in development and the roadmap didn't look like it was planning to venture into more serious computer vision. It didn't have quite what I needed and it looks unlikely it ever will. 
 
@@ -110,7 +110,7 @@ Final step is to install the libclang-dev or llvm package depending on your OS. 
    - Necessary casting of output data
    - Had to hard code the indices for extracting positional info from resultant matrix.
    
-   - It's worth noting that these are not necessarily failings of Rust, as these problems would exist wih Rust/CPP/Python. The Rust syntax did make these problems very obvious to see.
+   - It's worth noting that these are not necessarily failings of Rust, as these problems would exist with Rust/CPP/Python. The Rust syntax did make these problems very obvious to see.
 
 
 ## Integration into the game
@@ -128,7 +128,7 @@ Final step is to install the libclang-dev or llvm package depending on your OS. 
 
 ## References
 Thanks for watching/listening/reading.
-I've uploaded these slides and some notes to my github, where you can also find the f-trak and bongosero projects as well. 
+I've uploaded these slides and some notes to my GitHub, where you can also find the f-trak and bongosero projects as well. 
 The notes also contain references to the various articles I read and borrowed images from for this presentation.
 
 https://github.com/not-yet-awesome-rust/not-yet-awesome-rust#computer-vision
