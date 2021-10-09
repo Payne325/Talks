@@ -36,7 +36,7 @@ I already had prior experience with OpenCV with python, and I knew the underlyin
 
 ## Setting up the dev environment
 
-The first step was to download and install the library. For Windows this was recommended via a package manager, I used Chocolately. For Linux it's recommended for installation via the repository release or to compile from source.
+The first step was to download and install the library. For Windows this was recommended via a package manager, I used Chocolatey. For Linux it's recommended for installation via the repository release or to compile from source.
 
 Next I had to set a number of system variables. Most of these were documented but I ran into a few issues with certain system variables missing from the documentation. A number of issues in the repo suggested that this was not an uncommon problem. In fact there were a number of reported problems in the repo that I thankfully didn't see, but the build process certainly seems fragile on both Windows and Linux. 
 I couldn't help compare the process to that of opencv for python where you can just install and setup everything via pip in one command.
