@@ -39,7 +39,7 @@ I already had prior experience with OpenCV with python, and I knew the underlyin
 The first step was to download and install the library. For Windows this was recommended via a package manager, I used Chocolately. For Linux it's recommended for installation via the repository release or to compile from source.
 
 Next I had to set a number of system variables. Most of these were documented but I ran into a few issues with certain system variables missing from the documentation. A number of issues in the repo suggested that this was not an uncommon problem. In fact there were a number of reported problems in the repo that I thankfully didn't see, but the build process certainly seems fragile on both Windows and Linux. 
-I couldn't help compare the process to that of opencv for python where you cna just install and setup everything via pip in one command.
+I couldn't help compare the process to that of opencv for python where you can just install and setup everything via pip in one command.
 
 Final step is to install the libclang-dev or llvm package depending on your OS. The crate depends on these for building. 
 
@@ -47,23 +47,23 @@ Final step is to install the libclang-dev or llvm package depending on your OS. 
 
 - Detect Facial landmarks using HOGs (Histogram of Oriented Gradients)
    - The idea is that feature descriptors can be extracted from an image, and these descriptors are derived from the distribution in intensity gradients within the image.
-   - The intensity gradient being a directional change in color intensity for a neighbourhood of pixels in an image. A descriptor is a concatenation of these.
+   - The intensity gradient being a directional change in colour intensity for a neighbourhood of pixels in an image. A descriptor is a concatenation of these.
    - Descriptors are passed through some machine learned model to find the key facial landmarks (using H.O.Gs is fairly agnostic with regards to the model type)
-   - I believe that Support-Vector Machines were the first model used when H.O.G. facial detection although I've lost the link to whever I read that, so citation needed. 
+   - I believe that Support-Vector Machines were the first model used when H.O.G. facial detection although I've lost the link to wherever I read that, so citation needed. 
 
    - Dlib has provided this functionality for many years and is known to work
-   - Unoffical rust libraries exist, but this just provides bindings, user has to install dlib
+   - Unofficial rust libraries exist, but this just provides bindings, user has to install dlib
    - I had just come through the opencv set up at this point, so was eager to find a solution that didn't involve more libraries.
 
 - Describe Haar-Feature classifier approach
    - I discovered this after implementing the DNN approach, so did not consider this at the time.
-   - A predefined kernel/small matrix called a Haar-feature is applied across an image to detect the liklihood that some facial feature is within a particular subsection/window of the image.
+   - A predefined kernel/small matrix called a Haar-feature is applied across an image to detect the likelihood that some facial feature is within a particular subsection/window of the image.
    - Haar-features are used to detect lines and edges where a face would contrast locally between a darker and lighter areas. E.g. eyes vs bridge of the nose.
    - A Haar-feature classifier is a program constructed to group Haar-features into different stages and apply each stage to a window. If a stage fails, then the window is no longer considered for further evaluation. A window that passes all stages contains a facial landmark of some sort.
 
    - This is very fast, but from my reading it only works well for faces facing directly front.
    - OpenCV provides Haar-cascade Detection via its interface and even provides a weights file within its release files.
-   - If I revist this project, I'd like to experiment with a Harr-feature based implementation of the face tracker. 
+   - If I revisit this project, I'd like to experiment with a Harr-feature based implementation of the face tracker. 
 
 - Describe DNN approach
    - I'll admit to some bias for this approach, I had used it before with Python when first experimenting with OpenCV a few years ago
@@ -80,7 +80,7 @@ Final step is to install the libclang-dev or llvm package depending on your OS. 
 - Picked NN because
   - prior experience
   - had the model and weights to hand
-  - believed it would be mroe performant when running (best option for a game).
+  - believed it would be more performant when running (best option for a game).
 
 ## Implementation
 
@@ -90,7 +90,7 @@ Final step is to install the libclang-dev or llvm package depending on your OS. 
    - The image is then pre-processed into the size expected by the Neural net and converted to a 'blob'
    - The image blob is passed to the Neural net as input data and a forward pass of the model is triggered. Meaning the image data is passed through the layers
    - The output is returned in the form of a matrix, which we can extract normalised positions within the image to determine a bounding box containing the face.
-   - Simply multiply those normalised positions by the orginal frame width and height to obtain the position in the original image.
+   - Simply multiply those normalised positions by the original frame width and height to obtain the position in the original image.
 
    - Some of these points seem like they are quite complicated to do, and it can seem like I've glossed over them here, however each bullet point really only corresponds to one or two opencv functions, the library does a good job of extracting the complicated stuff across all available interfaces.
 
@@ -117,7 +117,7 @@ Final step is to install the libclang-dev or llvm package depending on your OS. 
 
 - Created a crate for f-trak to simplify development for myself
   - I could abstract/turn off f-trak in my game on the fly for debugging purposes
-  - Admitedly, it's mainly because I had never published a rust crate before and I was curious.
+  - Admittedly, it's mainly because I had never published a rust crate before and I was curious.
     - The process is well documented and very quick and Chris has given a talk about this before so I won't go into details.
 
 - The Game runs f-trak's function in a separate thread and utilises channels to receive the bounding box containing a face (rust-book chapter 16.2) 
