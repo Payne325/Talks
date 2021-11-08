@@ -40,6 +40,7 @@ So you may end up having to write some libraries yourself that you'd usually imp
 I ultimately had to use such a binding to use a computer vision library called opencv to handle the face detection. But there was a rust library already available to handle the bongos. Developers have their priorities right!
 
 ## Means of Face detection
+So as far as face detection goes, I had to do a bit of reading around on the subject and found myself with three possible approaches to consider.
 
 - Detect Facial landmarks using HOGs (Histogram of Oriented Gradients)
    - The idea is that feature descriptors can be extracted from an image, and these descriptors are derived from the distribution in intensity gradients within the image.
@@ -47,36 +48,48 @@ I ultimately had to use such a binding to use a computer vision library called o
    - Descriptors are passed through some machine learned model to find the key facial landmarks (using H.O.Gs is fairly agnostic with regards to the model type)
    - I believe that Support-Vector Machines were the first model used when H.O.G. facial detection although I've lost the link to wherever I read that, so citation needed. 
 
-   - Dlib has provided this functionality for many years and is known to work
-   - Unofficial rust libraries exist, but this just provides bindings, user has to install dlib
-   - I had just come through the opencv set up at this point, so was eager to find a solution that didn't involve more libraries.
+   - This functionality has been available for many years from several libraries and is known to work well.
+   - This method can produce information to generate exact position of face in image and its pose (orientation) information about an object
+   - Computationaly expensive at least for a computer game
 
 - Describe Haar-Feature classifier approach
-   - I discovered this after implementing the DNN approach, so did not consider this at the time.
    - A predefined kernel/small matrix called a Haar-feature is applied across an image to detect the likelihood that some facial feature is within a particular subsection/window of the image.
    - Haar-features are used to detect lines and edges where a face would contrast locally between a darker and lighter areas. E.g. eyes vs bridge of the nose.
    - A Haar-feature classifier is a program constructed to group Haar-features into different stages and apply each stage to a window. If a stage fails, then the window is no longer considered for further evaluation. A window that passes all stages contains a facial landmark of some sort.
 
-   - This is very fast, but from my reading it only works well for faces facing directly front.
    - OpenCV provides Haar-cascade Detection via its interface and even provides a weights file within its release files.
-   - If I revisit this project, I'd like to experiment with a Harr-feature based implementation of the face tracker. 
+   - Would provide exact positional informaiton.
+   - This is very fast, but from my reading it only works well for faces facing directly front.
+    - Not ideal for a real time application (game)
 
 - Describe DNN approach
-   - I'll admit to some bias for this approach, I had used it before with Python when first experimenting with OpenCV a few years ago
-   - For those that don't know, a neural network is a network of layers which uses weights to manipulate some given data. 
+   - A neural network is a network of layers which uses weights to manipulate some given data. 
    - When training a Neural Net, the result (in our case a classification) is determined as right or wrong, and that information is fed back into the model to adjust the weights at each layer.
    - For face detection, we can feed in the pixel data of an image and have the model return an area supposedly containing the face.
 
    - OpenCV has a Deep Neural Network (DNN) Module, with an interface for loading a caffe model and weights.
-   - It also hides the necessary model and weights for face detection in the source, which is now widely known online.
+    - It also hides the necessary model and weights for face detection in the source, which is now widely known online.
+    - If we didnt have this I'd have to generate my own model with my own dataset.
+      - would introduce all kinds of extra concerns regarding diversity in face types, positions, orientations, image quality etc
    - This approach is very fast and doesn't require the user to be directly front facing. 
    - This approach avoids the need to determine/define any facial landmark descriptors, but we can only obtain a bounding box around the face instead of precise detection of the face
       - Acceptable for our purposes   
 
 - Picked NN because
-  - prior experience
   - had the model and weights to hand
-  - believed it would be more performant when running (best option for a game).
+  - believed it would be more performant when running (best option for a game)
+  - didn't need exact position of facial features, just rough location on screen
+
+## Bongos
+This might end up being the shortest section of the talk.
+
+The Bongos are a geniune Nintendo Donkey Konga Bongo Controller from circa 2004. I also have an official Gamecube to USB adapter that I got with Smash Bros for Wii U. (Yes I realise this outs me as someone who actually bought a Wii U).
+
+There's lots of documentation and support for the adapter online, particularly among the Dolphin emulator and Project M communities. If you're using a Unix based operating system, you just need to plug in the Bongos and poll the device as you would with any other USB device. I'm no hardware programmer though, and found a rust library to talk to the adapter device within 5 minutes. I guess nerds love the gamecube.
+For Windows, you need the extra step of installing a driver. There's no official one available online, but the dolphin emulator team provide a custom written one for installation. And it works excellently.
+
+The buttons on the bongo correspond to buttons on a regular controller, the only thing that doesn't seem to work is the clap sensor. I imagine the adapter wire is missing a dataline or something, but I wasn't able to confirm this.
+It's a bit of a shame because I originally thought having a secondary attack triggered through clapping would've been very fun.
 
 ## Implementation - How does it work
 - Runs in a loop
@@ -88,26 +101,34 @@ I ultimately had to use such a binding to use a computer vision library called o
   - Once we have our scaled bounding box, the game uses the x component of the centre point of the box and sets the player character's x to match. (Remember, we're only moving along one axis, like in space invaders).
 
 ## How did it go?
-Well it certainly works in the back room in my house. I've had a lot of fun playing it when testing.
-I didn't consider a few things:
+Well it certainly works in the back room in my house. I've had a lot of fun playing it when testing... until I whacked my knee.
+I did discover that I hadn't considered a few things:
 
 - Distance of player to camera (this only really occurred to me when preparing to demonstrate this here)
-- 
+  - If you move further away from the camera you end up being able to get more precise movement.
+  - You can also reach the edges much easier due to the way the bounding box centre is used, the smaller the box, the easier the centre can reach the sides of the screen.
+- If I also wanted to take this further, I'd need to think about setting up some sort of calibration routine to make sure the movement of the character is consistent for different screen size ratios and people sit at different distances away from the camera.
 
 ## Lessons Learned
-
 Lessons learned about Rust:
 - Its fast
 - Compiler guarantees memory safety
 - Community is young, not lots of libraries to use
 
 Lessons learned about face detection for games:
--
+- Multiple means of detecting faces with various trade offs in accuracy and speed
+- Neural network approach excellent for using face to move a character in 2D
+  - But without using a premade model, gathering relevant data could be potentially difficult 
 
 Lessons learned about Bongos:
 - They're fun to slap
 - Software developers like to write programs that use them fairly early on in a programming language's life.
-
+- Official adapter *probably* doesn't support the clap sensor.  
+  
+Lessons learned about camera based gameplay:
+- Calibration is key to having a polished product
+- For fast paced gameplay, you need space.
+- Its relatively straightforward to add the controls to a game.
 
 ## I need a volunteer
  *Get someone to try the game*
