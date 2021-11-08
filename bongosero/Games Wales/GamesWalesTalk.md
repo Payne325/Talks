@@ -24,7 +24,7 @@ I also wanted to get more experience with the Rust programming language. I'd alr
 
 I wanted to experiment with Face detection because I think lots of game developers have ignored it for a while. After devices like the eye toy and the kinect came out, pricey peripherals that didn't offer hugely innovative gameplay, I think some appetite was lost. Well, now I think there's a lot of potential for camera based games to take off, now that most people have a phone in there pocket with a front facing camera that can play games. That potential market has increased in size, on a platform where games with a much quicker/shorter gameplay time are the norm, games are generally cheaper and there's no need to buy additional hardware.
 
-And finally, I wanted to use the Donkey Kong Bongos because I own them, they've just sat on a shelf for the last fifteen years and its undeniably funny.
+And finally, I wanted to use the Donkey Kong Bongos because I own them, they've just sat on a shelf for the last fifteen years and its undeniably funny. On a more seriousness point, they're much more tactile than a traditional controller, a keyboard or a phone screen and I thought it would be interesting to see if players become any more or less enaged when playing the game.
 
 So to capture all this, I decided to make a "Space Invaders" style game that used head tracking to move the player character left and right and used the bongos to fire the gun. For the purposes of the prototype I just wanted the core mechanisms to work.
 
@@ -130,7 +130,9 @@ Lessons learned about camera based gameplay:
 - For fast paced gameplay, you need space.
 - Its relatively straightforward to add the controls to a game.
 
-## I need a volunteer
+## Is it actually fun?
+
+I think so, but I need to do some wider testing. Very few people have a Bongo controller though... that's where you come in.
  *Get someone to try the game*
 
 ## References
