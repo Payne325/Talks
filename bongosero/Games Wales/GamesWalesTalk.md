@@ -11,8 +11,7 @@ Can find me on
 - GitHub: Payne325
 - Discord : PaynoInsano
 
-Today I'm going to be talking about a prototype game I developed in my spare time that uses face detection, the rust programming language, and this Gamecube Donkey Konga bongo controller.
-Before I begin, I do need to do a bit of plugging. I'm not going to dive too heavily into the programming side of things today, but if you are interested in learning more about the use of the Rust language in this game, I actually gave a talk about this for the RustCPlusPlus Cardiff group a while back. We're an informal group of Rust/CPP developers that meet roughly every month, and I'd encourage anyone -at any skill level with these languages- who's interested to come along to one of our -now online- meetups (Meetups.com) or to check out our youtube channel for previous recordings.    
+Today I'm going to be talking about a prototype game I developed in my spare time that uses face detection, the rust programming language, and this Gamecube Donkey Konga bongo controller.   
 
 ## Why?
 
@@ -30,8 +29,6 @@ So to capture all this, I decided to make a "Space Invaders" style game that use
 
 ## Rust
 
-So I said I'm not going to dive too deeply into the programming aspect of this, but I'd like to start with a brief overview of why Rust is worth considering for game development.
-
 The Rust language is very fast and memory efficient, often scoring similar or better than C++ in benchmarks, and its designed to ensure memory and thread safety at compile time. Anyone who's written C++ code involving pointers will understand how powerful that is. Essentially you've got a language promising speeds comparable to C++, but with a compiler that guarantees you won't hit any null reference exceptions during runtime. The side effect to this is that the compiler ends up being very strict, but the error messages are much more helpful/descriptive.
 
 Rust is quite a young language and the jury is still out as to whether it'll be widely adopted by the programming community (although there's lots of things to suggest that it will). This means there isn't a plethora of software libraries available for Rust in the same way there is for C++/C#/Python or whatever language you like to develop with. 
@@ -39,7 +36,9 @@ So you may end up having to write some libraries yourself that you'd usually imp
 
 I ultimately had to use such a binding to use a computer vision library called opencv to handle the face detection. But there was a rust library already available to handle the bongos. Developers have their priorities right!
 
-## Means of Face detection
+I'm not going to dive any deeper into the Rust programming aspect of this as I realise the audience aren't all programmers, but for those of you who are interested in learning more about the Rust language, I actually gave a talk about this project for the RustCPlusPlus Cardiff group a while back. We're an informal group of Rust/CPP developers that meet roughly every month, and I'd encourage anyone -at any skill level with these languages- who's interested to come along to one of our -now online- meetups (Meetups.com) or to check out our Youtube channel for previous recordings. 
+
+## HOG Face Detection
 So as far as face detection goes, I had to do a bit of reading around on the subject and found myself with three possible approaches to consider.
 
 - Detect Facial landmarks using HOGs (Histogram of Oriented Gradients)
@@ -52,17 +51,17 @@ So as far as face detection goes, I had to do a bit of reading around on the sub
    - This method can produce information to generate exact position of face in image and its pose (orientation) information about an object
    - Computationaly expensive at least for a computer game
 
-- Describe Haar-Feature classifier approach
+## Haar-Feature classifier Face Detection
    - A predefined kernel/small matrix called a Haar-feature is applied across an image to detect the likelihood that some facial feature is within a particular subsection/window of the image.
    - Haar-features are used to detect lines and edges where a face would contrast locally between a darker and lighter areas. E.g. eyes vs bridge of the nose.
    - A Haar-feature classifier is a program constructed to group Haar-features into different stages and apply each stage to a window. If a stage fails, then the window is no longer considered for further evaluation. A window that passes all stages contains a facial landmark of some sort.
 
    - OpenCV provides Haar-cascade Detection via its interface and even provides a weights file within its release files.
-   - Would provide exact positional informaiton.
+   - Would provide exact positional information.
    - This is very fast, but from my reading it only works well for faces facing directly front.
     - Not ideal for a real time application (game)
 
-- Describe DNN approach
+## Neural Network Face Detection
    - A neural network is a network of layers which uses weights to manipulate some given data. 
    - When training a Neural Net, the result (in our case a classification) is determined as right or wrong, and that information is fed back into the model to adjust the weights at each layer.
    - For face detection, we can feed in the pixel data of an image and have the model return an area supposedly containing the face.
@@ -83,12 +82,12 @@ So as far as face detection goes, I had to do a bit of reading around on the sub
 ## Bongos
 This might end up being the shortest section of the talk.
 
-The Bongos are a geniune Nintendo Donkey Konga Bongo Controller from circa 2004. I also have an official Gamecube to USB adapter that I got with Smash Bros for Wii U. (Yes I realise this outs me as someone who actually bought a Wii U).
+The Bongos are a genuine Nintendo Donkey Konga Bongo Controller from circa 2004. I also have an official Gamecube to USB adapter that I got with Smash Bros for Wii U. (Yes I realise this outs me as someone who actually bought a Wii U).
 
-There's lots of documentation and support for the adapter online, particularly among the Dolphin emulator and Project M communities. If you're using a Unix based operating system, you just need to plug in the Bongos and poll the device as you would with any other USB device. I'm no hardware programmer though, and found a rust library to talk to the adapter device within 5 minutes. I guess nerds love the gamecube.
+There's lots of documentation and support for the adapter online, particularly among the Dolphin emulator and Project M communities. If you're using a Unix based operating system, you just need to plug in the Bongos and poll the device as you would with any other USB device. I'm no hardware programmer though, and found a rust library to talk to the adapter device within 5 minutes. I guess nerds love the Gamecube.
 For Windows, you need the extra step of installing a driver. There's no official one available online, but the dolphin emulator team provide a custom written one for installation. And it works excellently.
 
-The buttons on the bongo correspond to buttons on a regular controller, the only thing that doesn't seem to work is the clap sensor. I imagine the adapter wire is missing a dataline or something, but I wasn't able to confirm this.
+The buttons on the bongo correspond to buttons on a regular controller, the only thing that doesn't seem to work is the clap sensor. I imagine the adapter wire is missing a data line or something, but I wasn't able to confirm this.
 It's a bit of a shame because I originally thought having a secondary attack triggered through clapping would've been very fun.
 
 ## Implementation - How does it work
